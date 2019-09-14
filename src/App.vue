@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
 
   /* http://meyerweb.com/eric/tools/css/reset/
     v2.0 | 20110126
@@ -69,8 +69,9 @@ export default {
       border-collapse: collapse;
       border-spacing: 0;
   }
-
-
+  html {
+    scroll-behavior: smooth;
+  }
 
 
 </style>

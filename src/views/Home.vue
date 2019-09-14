@@ -5,7 +5,7 @@
       <div class="content">
         <div class="nav-container">
           <div class=navs>
-              <a class="scene">
+              <a class="scene" href="#our_work_section">
                 <div class="box">
                   <span class="box__face box__face--front">ABOUT</span>
                   <span class="box__face box__face--top">ABOUT</span>  
@@ -64,7 +64,10 @@
       </a>
     </div>
   </div>
-  <div class="our-work-section">
+  <div class="our-work-section" id="our_work_section">
+    <div class="our-work-section-title">
+      <h2>Our Work</h2>
+    </div>
     <our-work-item
       v-for="btn in btns"
       v-bind:key="btn.id"
@@ -303,6 +306,19 @@
       letter-spacing: 0.4rem;
       color: #fff;
       text-transform: uppercase;
+    }
+  }
+  .our-work-section-title {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      font-size: 2rem;
+      line-height: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.2rem;
+      color: #000;
     }
   }
 
