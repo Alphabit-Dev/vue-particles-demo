@@ -72,13 +72,27 @@
       v-for="btn in btns"
       v-bind:key="btn.id"
       v-bind:title="btn.title" 
+      v-bind:isActive="btn.isActive" 
     />
+  </div>
+  <div class="our-services-section">
+    <agile :initial-slide="3" :dots="false" :infinite="true" :autoplay-speed="1000" :slidesToShow="1"
+      :responsive="responsiveCarouselSettings">
+      <img class="slide" src="https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1524260855046-f743b3cdad07?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1526080676457-4544bf0ebba9?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1426170042593-200f250dfdaf?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+      <img class="slide" src="https://images.unsplash.com/photo-1529815481058-55e5b656f6d6?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
+    </agile>
   </div>
 </div>
 </template>
 
 <script>
   import OurWorkItem from "../components/OurWorkItem.vue";
+  import { log } from 'util';
   export default {
     components: { 
       OurWorkItem
@@ -88,21 +102,43 @@
         btns : [
           {
             id: "001",
-            title: "Title 1"
+            title: "Title 1",
+            isActive: true,
+            informationPosition: "2"
           },
           {
             id: "002",
-            title: "Title 2"
+            title: "Title 2",
+            isActive: false,
+            informationPosition: "2"
           },
           {
             id: "003",
-            title: "Title 3"
+            title: "Title 3",
+            isActive: true,
+            informationPosition: "2"
           },
           {
             id: "004",
-            title: "Title 4"
+            title: "Title 4",
+            isActive: false,
+            informationPosition: "2"
           }
-        ]
+        ],
+        responsiveCarouselSettings: [
+          {
+            breakpoint: 700,
+            settings: {
+              slidesToShow: 3
+            }
+          },
+          {
+            breakpoint: 1000,
+            settings: {
+              slidesToShow: 4
+              }
+            }
+          ]
        };
     },
     mounted() { 
@@ -113,6 +149,7 @@
     },
     methods : {
       createInteractInterval: function() {   
+        log("Function - createInteractInterval()")
         this.labelsArray = [
           "bold",
           "creative",
@@ -132,6 +169,8 @@
       },
       stopIteractInterval: function() {
         clearInterval(this.interactLabelInterval);
+      },
+      animateWorkCards: function() {
       }
     }
   };
@@ -141,6 +180,23 @@
   $box-width: 200px;
   $box-height: 76px;
   $box-translate-z: 38px;
+  
+  .come-in {
+    transform: translateY(150px);
+    animation: come-in 0.8s ease forwards;
+  }
+  .come-in:nth-child(odd) {
+    animation-duration: 0.6s;
+  }
+  .already-visible {
+    transform: translateY(0);
+    animation: none;
+  }
+
+  @keyframes come-in {
+    to { transform: translateY(0); }
+  }
+
   .home {
     background-color: #777;
     background-position: center;
@@ -320,6 +376,67 @@
       letter-spacing: 0.2rem;
       color: #000;
     }
+  }
+
+  .our-services-section {
+    .agile__nav-button {
+      background: transparent;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 24px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      transition-duration: 0.3s;
+      width: 80px;
+    }
+    .agile__nav-button:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 1;
+    }
+    .agile__nav-button--prev {
+      left: 0;
+    }
+    .agile__nav-button--next {
+      right: 0;
+    }
+    .agile__dots {
+      bottom: 10px;
+      left: 50%;
+      position: absolute;
+      -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+    }
+    .agile__dot {
+      margin: 0 10px;
+    }
+    .agile__dot button {
+      background-color: transparent;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      display: block;
+      height: 10px;
+      font-size: 0;
+      line-height: 0;
+      margin: 0;
+      padding: 0;
+      transition-duration: 0.3s;
+      width: 10px;
+    }
+    .agile__dot--current button, .agile__dot:hover button {
+      background-color: #fff;
+    }
+
+    .slide {
+      display: block;
+      height: 500px;
+      -o-object-fit: cover;
+        object-fit: cover;
+      width: 100%;
+    }
+
   }
 
 </style>

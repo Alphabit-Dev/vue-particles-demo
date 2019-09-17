@@ -1,11 +1,19 @@
 <template>
-  <div class="container work-card">
+  <div class="container work-card" v-observe-visibility="{
+      callback: visibilityChanged,
+      throttle,
+      intersection: {
+        threshold,
+      },
+    }">
     <div class="row">
-      <div class="col-md-6 order-md-2 image-area">
+      <div class="col-md-6 image-area"
+        v-bind:class="{ active: isActive, 'order-md-2': 'order-md-1' }">
         <!-- Section with image of the proyect -->
-        <img src="https://www.rocketinsights.com/images/img-overview-virgin-pulse.png" alt="">
+        <img src="../assets/work_roku_image.jpeg" alt="">
       </div>
-      <div class="col-md-6 order-md-1 information-area">
+      <div class="col-md-6 information-area"
+        v-bind:class="{ active: isActive, 'order-md-1': 'order-md-2' }">
         <!-- Section with information of the project -->
         <h3>Virgin Pulse</h3>
         <h4>design - development - product strategy</h4>
@@ -29,10 +37,22 @@ export default {
   components: { },
   props: {
     title: String,
-    id: String
+    id: String,
+    isActive: Boolean,
+    imagePosition: String
   }, 
+  methods : { 
+    visibilityChanged (isVisible, entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('transition-in');
+      }
+    },
+  },
   data: function() {
-    return { }
+    return { 
+      throttle: 200,
+      threshold: 0.5  
+    }
   }
 }
 </script>
@@ -40,10 +60,37 @@ export default {
 <style scoped lang="scss">
   $color: #111;
   $primary: #FFAB9D;
+  // Small tablets and large smartphones (landscape view)
+  $screen-sm-min: 576px;
+  // Small tablets (portrait view)
+  $screen-md-min: 768px;
+  // Tablets and small desktops
+  $screen-lg-min: 992px;
+  // Large tablets and desktops
+  $screen-xl-min: 1200px;
+  
+  @mixin hide-animation-x($time) {
+    opacity: 0;
+    transform: translateX(-50%);
+    transition-timing-function: ease-in;
+    transition: $time;
+  };
+
+  @mixin show-animation-x($time) {
+    transition: $time;
+    transition-timing-function: ease-out;
+    transform: translateX(0);
+    opacity: 1;
+  }
+
   .work-card {
     margin-bottom: 60px;
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
   }
   h3 {
+    @include hide-animation-x(1s);
     font-family: 'Montserrat', sans-serif; 
     font-size: 1.5rem;
     line-height: 1.5rem;
@@ -59,6 +106,7 @@ export default {
     }
   }
   h4 {
+    @include hide-animation-x(0.5s);
     font-family: 'Montserrat', sans-serif; 
     font-size: 0.7rem;
     line-height: 0.7rem;
@@ -66,7 +114,8 @@ export default {
     color: #a71728;
     margin: 20px 0;
   }
-  p {   
+  p {  
+    @include hide-animation-x(0.3s);
     font-family: 'Montserrat', sans-serif; 
     font-size: 1rem;
     line-height: 1.4rem;
@@ -141,5 +190,32 @@ export default {
       max-width: 250px;
     }
   }
+  .transition-in {
+    h3 {
+      @include show-animation-x(1s);
+    }
+    h4 {
+      @include show-animation-x(0.5s);
+    }
+    p {
+      @include show-animation-x(0.3s); 
+    }
+  }
 
+  @media (min-width: #{$screen-md-min}) {
+    .work-card {
+      max-width: 900px;
+      margin: auto;
+      margin-bottom: 60px;
+    }
+    .information-area {
+      margin: auto;
+    }
+    .image-area {
+      img {
+        max-width: 100%;
+      }
+    }  
+  }
+   
 </style>
