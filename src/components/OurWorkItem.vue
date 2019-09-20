@@ -7,14 +7,31 @@
       },
     }">
     <div class="row">
+      <!-- Section with image of the proyect -->
       <div class="col-md-6 image-area"
-        v-bind:class="{ active: isActive, 'order-md-2': 'order-md-1' }">
-        <!-- Section with image of the proyect -->
+        v-bind:class="[isInfoColFirst ? 'order-md-2' : 'order-md-1']">
+        <span class="cube middle mobile-hidden"></span>
+        <span class="cube top mobile-hidden"></span>
+        <span class="cube bottom mobile-hidden"></span>
         <img src="../assets/work_roku_image.jpeg" alt="">
       </div>
+      <!-- Section with information of the project -->
       <div class="col-md-6 information-area"
-        v-bind:class="{ active: isActive, 'order-md-1': 'order-md-2' }">
-        <!-- Section with information of the project -->
+        v-bind:class="[isInfoColFirst ? 'order-md-1' : 'order-md-2']">
+        <span class="svg-triangle-container">
+          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 586 524" style="enable-background:new 0 0 586 524;" xml:space="preserve">
+            <pattern  x="95" y="-63" width="12" height="12" patternUnits="userSpaceOnUse" id="New_Pattern" viewBox="0 -12 12 12" style="overflow:visible;">
+              <g>
+                <rect y="-12" class="st0" width="12" height="12"/>
+                <circle class="st1" cx="6" cy="-6" r="1.5"/>
+              </g>
+            </pattern>
+            <pattern  id="SVGID_1_" xlink:href="#New_Pattern" patternTransform="matrix(1 0 0 1 -99 0)">
+            </pattern>
+            <polygon class="st2" points="1.5,7 288.5,522 589.5,3 "/>
+          </svg>
+        </span>
         <h3>Virgin Pulse</h3>
         <h4>design - development - product strategy</h4>
         <p>We worked with the leader in corporate health and fitness to make health tracking even easier with an intuitive watch app.</p>
@@ -38,8 +55,7 @@ export default {
   props: {
     title: String,
     id: String,
-    isActive: Boolean,
-    imagePosition: String
+    isInfoColFirst: Boolean
   }, 
   methods : { 
     visibilityChanged (isVisible, entry) {
@@ -68,26 +84,49 @@ export default {
   $screen-lg-min: 992px;
   // Large tablets and desktops
   $screen-xl-min: 1200px;
-  
   @mixin hide-animation-x($time) {
     opacity: 0;
     transform: translateX(-50%);
     transition-timing-function: ease-in;
     transition: $time;
   };
-
   @mixin show-animation-x($time) {
     transition: $time;
     transition-timing-function: ease-out;
     transform: translateX(0);
     opacity: 1;
   }
-
+  /* Safari 4.0 - 8.0 */
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    8.33%, 25% {
+      transform: rotate(180deg);
+    }
+    33.33%, 50% {
+      transform: rotate(0deg);
+    }
+    58.33%, 75% {
+      transform: rotate(180deg);
+    }
+    83.33%, 100% {
+      transform: rotate(0deg);
+    }
+  }
+  .mobile-hidden {
+    display: none !important;
+  }
   .work-card {
     margin-bottom: 60px;
     opacity: 1;
     -webkit-transform: translateY(0);
     transform: translateY(0);
+    &:hover {
+      .cta:before {
+        animation: spin 7s infinite;
+      }
+    }
   }
   h3 {
     @include hide-animation-x(1s);
@@ -97,12 +136,18 @@ export default {
     font-weight: 700;
     letter-spacing: 0.1rem;
     &:before {
-      content: " ";
-      width: 78px;
-      height: 8px;
-      display: block;
-      background-color: #a71728;
-      margin-bottom: 15px;
+        content: " ";
+        display: none;
+        width: 0;
+        height: 0;
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-top: 60px solid #a71728;
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin-left: -80px;
+        margin-top: -18px;
     }
   }
   h4 {
@@ -122,6 +167,36 @@ export default {
   }
   .information-area {
     padding: 0 50px;
+    &.order-md-2 {
+      .svg-triangle-container { 
+        margin-left: 176px !important;
+      }
+      h3 {
+        &:before {
+          border-left: 30px solid transparent;
+          border-right: 30px solid transparent;
+          border-bottom: 60px solid #a71728;
+          border-top: none;
+          right: 0;
+          left: unset;
+          margin-top: -35px;
+          margin-left: 0;
+        }
+      }
+    }
+    .svg-triangle-container {
+      display: block;
+      position: absolute;
+      width: 350px;
+      top: 0;
+      left: 0;
+      margin-left: -176px;
+      margin-top: -55px;
+      opacity: .4;
+      .st0{ fill:none; }
+      .st1{ fill:#B3B3B3; }
+      .st2{ fill:url(#SVGID_1_); }
+    }
     a {
       text-decoration: none;
       color: #111;
@@ -137,10 +212,10 @@ export default {
         top: 6px;
         left: 0;
         display: block;
-        border-radius: 50%;
+        // border-radius: 50%;
         background: rgba(167, 23, 40, 1);
-        width: 40px;
-        height: 40px;
+        width: 20px;
+        height: 20px;
         transition: all 0.3s ease;
       }
       span {
@@ -151,6 +226,7 @@ export default {
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
+        text-decoration: underline;
       }
       svg {
         position: relative;
@@ -166,8 +242,10 @@ export default {
       }
       &:hover:before {
         width: 100%;
+        height: 50px;
         // background: rgba(167, 23, 40, 0.5);
         border-radius: 4px;;
+        
 
       }
       &:hover span {
@@ -186,8 +264,39 @@ export default {
     display: flex;
     justify-content: center;
     margin-bottom: 25px;
+    &.order-md-1 {
+      .cube {
+        left: 0;
+        right: unset;
+        &.top {
+          margin-top: -30px;
+          margin-left: 19px;
+        }
+        &.bottom {
+          margin-top: 30px;
+          margin-left: -19px;
+        }
+      }
+    } 
     img {
       max-width: 250px;
+    }
+    .cube {
+      display: block;
+      width: 5px;
+      height: 5px;
+      background-color: #a71728;
+      position: absolute;
+      top: 0;
+      right: 0;
+      &.top {
+        margin-top: -30px;
+        margin-right: 19px;
+      }
+      &.bottom {
+        margin-top: 30px;
+        margin-right: -19px;
+      }
     }
   }
   .transition-in {
@@ -201,8 +310,10 @@ export default {
       @include show-animation-x(0.3s); 
     }
   }
-
   @media (min-width: #{$screen-md-min}) {
+    .mobile-hidden {
+      display: block !important;
+    }
     .work-card {
       max-width: 900px;
       margin: auto;
@@ -210,12 +321,16 @@ export default {
     }
     .information-area {
       margin: auto;
+      h3 {
+        &:before {
+          display: block;
+        }
+      }
     }
     .image-area {
       img {
         max-width: 100%;
       }
     }  
-  }
-   
+  }   
 </style>

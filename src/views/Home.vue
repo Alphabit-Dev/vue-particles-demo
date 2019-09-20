@@ -72,37 +72,19 @@
       v-for="btn in btns"
       v-bind:key="btn.id"
       v-bind:title="btn.title" 
-      v-bind:isActive="btn.isActive" 
-    />
+      v-bind:isInfoColFirst="btn.isInfoColFirst"/>
   </div>
-  <div class="our-services-section">
-    <agile :initial-slide="3" :dots="false" :infinite="true" :autoplay-speed="1000" :slidesToShow="1" centerPadding="10%" :centerMode="true" :responsive="responsiveCarouselSettings">
-      <!-- <img class="slide" src="https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1524260855046-f743b3cdad07?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1526080676457-4544bf0ebba9?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1426170042593-200f250dfdaf?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/>
-      <img class="slide" src="https://images.unsplash.com/photo-1529815481058-55e5b656f6d6?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;w=1600&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjE0NTg5fQ"/> -->
-      <our-service-item
-        v-for="btn in btns"
-        v-bind:key="btn.id"
-        v-bind:title="btn.title" 
-        v-bind:isActive="btn.isActive" 
-      />
-    </agile>
-  </div>
+  <carousel-services/>
 </div>
 </template>
-
 <script>
   import OurWorkItem from "../components/OurWorkItem.vue";
-  import OurServiceItem from "../components/OurServiceItem.vue";
+  import CarouselServices from "../components/CarouselServices.vue";
   import { log } from 'util';
   export default {
     components: { 
       OurWorkItem,
-      OurServiceItem
+      CarouselServices
     },
     data() {
       return {
@@ -110,46 +92,24 @@
           {
             id: "001",
             title: "Title 1",
-            isActive: true,
-            informationPosition: "2"
+            isInfoColFirst: true
           },
           {
             id: "002",
             title: "Title 2",
-            isActive: false,
-            informationPosition: "2"
+            isInfoColFirst: false
           },
           {
             id: "003",
             title: "Title 3",
-            isActive: true,
-            informationPosition: "2"
+            isInfoColFirst: true
           },
           {
             id: "004",
             title: "Title 4",
-            isActive: false,
-            informationPosition: "2"
+            isInfoColFirst: false
           }
-        ],
-        responsiveCarouselSettings: [
-          {
-            breakpoint: 700,
-            settings: {
-              slidesToShow: 3,
-              centerPadding: "10%",
-              centerMode: true
-            }
-          },
-          {
-            breakpoint: 1000,
-            settings: {
-              slidesToShow: 5,
-              centerPadding: "10%",
-              centerMode: true
-              }
-            }
-          ]
+        ]
       };
     },
     mounted() { 
@@ -186,12 +146,18 @@
     }
   };
 </script>
-
 <style scoped lang="scss">
   $box-width: 200px;
   $box-height: 76px;
   $box-translate-z: 38px;
-  
+  // Small tablets and large smartphones (landscape view)
+  $screen-sm-min: 576px;
+  // Small tablets (portrait view)
+  $screen-md-min: 768px;
+  // Tablets and small desktops
+  $screen-lg-min: 992px;
+  // Large tablets and desktops
+  $screen-xl-min: 1200px;
   .come-in {
     transform: translateY(150px);
     animation: come-in 0.8s ease forwards;
@@ -203,11 +169,9 @@
     transform: translateY(0);
     animation: none;
   }
-
   @keyframes come-in {
     to { transform: translateY(0); }
   }
-
   .home {
     background-color: #777;
     background-position: center;
@@ -388,66 +352,4 @@
       color: #000;
     }
   }
-
-  .our-services-section {
-    .agile__nav-button {
-      background: transparent;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      font-size: 24px;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      transition-duration: 0.3s;
-      width: 80px;
-    }
-    .agile__nav-button:hover {
-      background-color: rgba(0, 0, 0, 0.5);
-      opacity: 1;
-    }
-    .agile__nav-button--prev {
-      left: 0;
-    }
-    .agile__nav-button--next {
-      right: 0;
-    }
-    .agile__dots {
-      bottom: 10px;
-      left: 50%;
-      position: absolute;
-      -webkit-transform: translateX(-50%);
-              transform: translateX(-50%);
-    }
-    .agile__dot {
-      margin: 0 10px;
-    }
-    .agile__dot button {
-      background-color: transparent;
-      border: 1px solid #fff;
-      border-radius: 50%;
-      cursor: pointer;
-      display: block;
-      height: 10px;
-      font-size: 0;
-      line-height: 0;
-      margin: 0;
-      padding: 0;
-      transition-duration: 0.3s;
-      width: 10px;
-    }
-    .agile__dot--current button, .agile__dot:hover button {
-      background-color: #fff;
-    }
-
-    .slide {
-      display: block;
-      height: 500px;
-      -o-object-fit: cover;
-        object-fit: cover;
-      width: 100%;
-    }
-
-  }
-
 </style>
